@@ -10,3 +10,12 @@ test("login to hrm", async ({ page }) => {
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
 
 })
+
+test("login con contraseña incorrecta", async ({ page }) => {
+  await page.goto('https://opensource-demo.orangehrmlive.com/')
+  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
+  await page.getByRole('textbox', { name: 'password' }).fill('contraseñaMala')
+  await page.getByRole('button', { name: 'Login' }).click()
+
+  await expect(page.getByRole('alert')).toContainText('Invalid credentials')
+})
