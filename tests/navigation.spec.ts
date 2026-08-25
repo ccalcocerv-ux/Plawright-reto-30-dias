@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import { LoginPage } from "../pageObjects/LoginPage"
 
 test("Check left menu options", async ({ page }) => {
   // Test code here
@@ -81,10 +82,8 @@ expect(currentMenuItems[0]).toEqual('Admin')
 test('navegator through the left panel', async ({ page }) => {
 test.setTimeout(90000) 
 
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+  const loginPage = new LoginPage(page)
+  await loginPage.doLogin('Admin', 'admin123')
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
 
