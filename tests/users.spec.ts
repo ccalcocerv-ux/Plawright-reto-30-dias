@@ -1,97 +1,105 @@
-import { expect, test } from "@playwright/test"
-import { LoginPage } from "../pageObjects/LoginPage"
+//import { expect, test } from "@playwright/test"
+import { test, expect } from "../fixtures/fixtures";
 
-test("Get all the usersnames registered", async ({ page }) => {
-  // Test code here
-  const loginPage = new LoginPage(page)
-  await loginPage.doLogin('Admin', 'admin123')
+test.describe("users", () => {
 
-  await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
+test.beforeEach(async ({ loginPage }) => {
 
-  await (page.getByRole('link', {name: 'Admin'})).click()
-
-  await (page.getByRole('navigation', {name: 'Topbar menu'})).getByText('User Management').click()
-  await (page.getByRole('menuitem', {name: 'Users'})).click()
-
-  const rows =  page.getByRole('table').getByRole('row')
-  const usernames: string[] = []
-
-  const rowCount = await rows.count()
-  for (let i = 1; i < rowCount; i++) {
-    const cell = rows.nth(i).getByRole('cell').nth(1)
-    const username = await cell.textContent()
-    
-    if (username) {
-    usernames.push(username)
-    }
-  }
-
-  console.log(usernames)
-
+  await loginPage.doLogin("Admin", "admin123");
 })
+  
 
+  test("Get all the usersnames registered", async ({ page }) => {
+    // Test code here
 
-test("Get all the employeenames registered", async ({ page }) => {
-  // Test code here
+    await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
-  const loginPage = new LoginPage(page)
-  await loginPage.doLogin('Admin', 'admin123')
+    await page.getByRole("link", { name: "Admin" }).click();
 
-  await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
+    await page
+      .getByRole("navigation", { name: "Topbar menu" })
+      .getByText("User Management")
+      .click();
+    await page.getByRole("menuitem", { name: "Users" }).click();
 
-  await (page.getByRole('link', {name: 'Admin'})).click()
+    const rows = page.getByRole("table").getByRole("row");
+    const usernames: string[] = [];
 
-  await (page.getByRole('navigation', {name: 'Topbar menu'})).getByText('User Management').click()
-  await (page.getByRole('menuitem', {name: 'Users'})).click()
+    const rowCount = await rows.count();
+    for (let i = 1; i < rowCount; i++) {
+      const cell = rows.nth(i).getByRole("cell").nth(1);
+      const username = await cell.textContent();
 
-  const rows =  page.getByRole('table').getByRole('row')
-  const employeenames: string[] = []
-
-  const rowCount = await rows.count()
-  for (let i = 1; i < rowCount; i++) {
-    const cell = rows.nth(i).getByRole('cell').nth(3)
-    const employeename = await cell.textContent()
-    
-    if (employeename) {
-    employeenames.push(employeename)
+      if (username) {
+        usernames.push(username);
+      }
     }
-  }
 
-  console.log(employeenames)
+    console.log(usernames);
+  });
 
-}) 
+  test("Get all the employeenames registered", async ({ page }) => {
+    // Test code here
 
+    await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
+    await page.getByRole("link", { name: "Admin" }).click();
 
+    await page
+      .getByRole("navigation", { name: "Topbar menu" })
+      .getByText("User Management")
+      .click();
+    await page.getByRole("menuitem", { name: "Users" }).click();
 
-test("Select specific user for edition", async ({ page }) => {
-  // Test code here
+    const rows = page.getByRole("table").getByRole("row");
+    const employeenames: string[] = [];
 
-  const userForEdition = 'Savya'
+    const rowCount = await rows.count();
+    for (let i = 1; i < rowCount; i++) {
+      const cell = rows.nth(i).getByRole("cell").nth(3);
+      const employeename = await cell.textContent();
 
-  const loginPage = new LoginPage(page)
-  await loginPage.doLogin('Admin', 'admin123')
+      if (employeename) {
+        employeenames.push(employeename);
+      }
+    }
 
-  await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
+    console.log(employeenames);
+  });
 
-  await (page.getByRole('link', {name: 'Admin'})).click()
+  test("Select specific user for edition", async ({ page }) => {
+    // Test code here
+    test.setTimeout(60000);
+    
 
-  await (page.getByRole('navigation', {name: 'Topbar menu'})).getByText('User Management').click()
-  await (page.getByRole('menuitem', {name: 'Users'})).click()
+    const userForEdition = "2079e4b6-92df-4958-b";
 
-  const pencilToEdit =  page
-  .getByRole('table')
-  .getByRole('row')
-  .filter({ hasText: userForEdition })
-  .locator('button')
-  .filter({has: page.locator('i.bi-pencil-fill') })
-  .first()
+    await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
-await pencilToEdit.click()
+    await page.getByRole("link", { name: "Admin" }).click();
 
-const currentUsername = await page.locator("//label[contains(.,'Username')]/parent::div/following-sibling::div/input")
-.inputValue()
+    await page
+      .getByRole("navigation", { name: "Topbar menu" })
+      .getByText("User Management")
+      .click();
+    await page.getByRole("menuitem", { name: "Users" }).click();
 
-expect(currentUsername).toEqual(userForEdition)
+    const pencilToEdit = page
+      .getByRole("table")
+      .getByRole("row")
+      .filter({ hasText: userForEdition })
+      .locator("button")
+      .filter({ has: page.locator("i.bi-pencil-fill") })
+      .first();
 
-})
+    await pencilToEdit.click();
+
+    const currentUsername = await page
+      .locator(
+        "//label[contains(.,'Username')]/parent::div/following-sibling::div/input",
+      )
+      .inputValue();
+
+    expect(currentUsername).toEqual(userForEdition);
+  });
+});
