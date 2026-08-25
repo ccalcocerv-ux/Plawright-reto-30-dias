@@ -1,15 +1,23 @@
-import {expect, test } from "@playwright/test";
+import {expect, test } from'@playwright/test'
+import { LoginPage } from '../pageObjects/LoginPage'
+import { SidePanel, SideMenuOption } from '../components/SidePaneles'
 
 test("login to hrm", async ({ page }) => {
   // Test code here
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+test.setTimeout(60000);
 
-  await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
+  const loginPanel = new LoginPage(page)
+  await loginPanel.doLogin("Admin", "admin123")
+
+  const sidePanel = new SidePanel(page)
+  await sidePanel.clickOnOption(SideMenuOption.ADMIN)
+  await sidePanel.clickOnOption(SideMenuOption.DASHBOARD)
+  await sidePanel.clickOnOption(SideMenuOption.BUZZ)
+
 
 })
+
+
 
 test("login con contraseña incorrecta", async ({ page }) => {
   await page.goto('https://opensource-demo.orangehrmlive.com/')
