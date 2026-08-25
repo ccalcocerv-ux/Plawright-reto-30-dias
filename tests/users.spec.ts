@@ -61,4 +61,41 @@ test("Get all the employeenames registered", async ({ page }) => {
 
   console.log(employeenames)
 
+}) 
+
+
+
+
+test("Select specific user for edition", async ({ page }) => {
+  // Test code here
+
+  const userForEdition = 'FMLName1'
+
+  await page.goto('https://opensource-demo.orangehrmlive.com/')
+  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
+  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
+  await page.getByRole('button', { name: 'Login' }).click()
+
+  await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
+
+  await (page.getByRole('link', {name: 'Admin'})).click()
+
+  await (page.getByRole('navigation', {name: 'Topbar menu'})).getByText('User Management').click()
+  await (page.getByRole('menuitem', {name: 'Users'})).click()
+
+  const pencilToEdit =  page
+  .getByRole('table')
+  .getByRole('row')
+  .filter({ hasText: userForEdition })
+  .locator('button')
+  .filter({has: page.locator('i.bi-pencil-fill') })
+  .first()
+
+await pencilToEdit.click()
+
+const currentUsername = await page.locator("//label[contains(.,'Username')]/parent::div/following-sibling::div/input")
+.inputValue()
+
+expect(currentUsername).toEqual(userForEdition)
+
 })
