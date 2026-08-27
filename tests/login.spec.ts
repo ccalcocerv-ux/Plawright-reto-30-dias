@@ -7,10 +7,26 @@ test("login to hrm", async ({ page }) => {
 test.setTimeout(60000);
 
   const loginPanel = new LoginPage(page)
-  await loginPanel.doLogin("Admin", "admin123")
+  await loginPanel.loginAsAdmin()
 
   const sidePanel = new SidePanel(page)
   await sidePanel.clickOnOption(SideMenuOption.ADMIN)
+  await sidePanel.clickOnOption(SideMenuOption.DASHBOARD)
+  await sidePanel.clickOnOption(SideMenuOption.BUZZ)
+
+
+})
+
+
+test("login to hrm as user", async ({ page }) => {
+  // Test code here
+test.setTimeout(60000);
+
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsUser()
+
+  const sidePanel = new SidePanel(page)
+  await sidePanel.clickOnOption(SideMenuOption.TIME)
   await sidePanel.clickOnOption(SideMenuOption.DASHBOARD)
   await sidePanel.clickOnOption(SideMenuOption.BUZZ)
 

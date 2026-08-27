@@ -3,10 +3,8 @@ import { LoginPage } from "../pageObjects/LoginPage"
 
 test("Check left menu options", async ({ page }) => {
   // Test code here
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsAdmin()
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
 
@@ -49,10 +47,9 @@ test("Check left menu options", async ({ page }) => {
 
 /*test("Check left menu options", async ({ page }) => {
   // Test code here
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+  test.setTimeout(90000) 
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsAdmin()
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
 
@@ -82,8 +79,8 @@ expect(currentMenuItems[0]).toEqual('Admin')
 test('navegator through the left panel', async ({ page }) => {
 test.setTimeout(90000) 
 
-  const loginPage = new LoginPage(page)
-  await loginPage.doLogin('Admin', 'admin123')
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsAdmin()
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
 
@@ -127,10 +124,8 @@ test.setTimeout(60000)
 
     ]
 
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsAdmin()
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
   
@@ -172,10 +167,8 @@ test.setTimeout(60000)
 
     ]
 
-  await page.goto('https://opensource-demo.orangehrmlive.com/')
-  await page.getByRole('textbox', { name: 'username' }).fill('Admin')
-  await page.getByRole('textbox', { name: 'password' }).fill('admin123')
-  await page.getByRole('button', { name: 'Login' }).click()
+  const loginPanel = new LoginPage(page)
+  await loginPanel.loginAsAdmin()
 
   await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible()
   
